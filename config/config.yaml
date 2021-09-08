@@ -1,2 +1,8 @@
-img_path: "/scratch/indikar_root/indikar1/shared_data/pipeline_test/inputs/"
+img_path: "/nfs/turbo/umms-indikar/shared/projects/live_cell_imaging/6A/B5_subset.czi"
+output: "/home/cstansbu/git_repositories/pip_fucci_pipeline/outputs/"
+channels:
+    green: 1
+    blue: 2
+    red: 3
+    oblique: 4
 threads: 36

@@ -1,38 +1,26 @@
 import pandas as pd
 import yaml
 from pathlib import Path
-from utils import snakemake_utils
 
 # Define config and input and output directories
 BASE_DIR = Path(workflow.basedir)
 configfile: BASE_DIR/"config/config.yaml"
 
+IMG_PATH = f"{config['img_path']}"
 OUTPUTS = f"{config['output']}"
-READS = f"{config['reads']}"
-REFERENCE = f"{config['reference']}"
-ASSEMBLY = f"{config['assembly']}"
-
 
 ##### load rules #####
-include: "rules/alignment.smk"  # alignment rules
-include: "rules/reporting.smk"  # coverage statistics
-include: "rules/create_alignment_table.smk"  # build alignment table
-include: "rules/create_aux_outputs.smk"  # build other outputs
+include: "rules/preprocessing.smk"  # image preparation
+include: "rules/segmentation.smk"  # nuclear segementation
+include: "rules/tracking.smk"  # track linkning
+include: "rules/signal_processing.smk"  # QA and signal processing
 
 
 rule all:
     input:
-        f"{OUTPUTS}merged_sorted.bam",
         f"{OUTPUTS}config.yaml",
-        f"{OUTPUTS}stats/merged_sorted_stats.txt",
-        f"{OUTPUTS}stats/coverage_table.txt",
-        f"{OUTPUTS}stats/samtools_coverage.txt",
-        f"{OUTPUTS}stats/custom_coverage_table.csv",
-        f"{OUTPUTS}tables/raw_alignment_table.csv",
-        f"{OUTPUTS}tables/digested_fragments_table.csv",
-        f"{OUTPUTS}tables/alignment_table_mapped.csv",
-        f"{OUTPUTS}tables/alignment_table.csv",
-        f"{OUTPUTS}tables/incidence_table.csv",
+        f"{OUTPUTS}reports/raw_image_statistics.csv",
+        
         
 # put a copy of the chosen parameters in the output file        
 rule copy_config:
@@ -42,4 +30,18 @@ rule copy_config:
         f"{OUTPUTS}config.yaml"
     shell:
         "cp {input} {output}"
-       
+        
+           
+rule split_channels:
+    input:
+        "config/config.yaml",
+    output:
+        f"{OUTPUTS}reports/raw_image_statistics.csv"
+    shell:
+        "python scripts/split_channels.py {input} {output}"
+ 
+ 
+rule write_tiffs:
+    input:
+    output:
+    shell:
