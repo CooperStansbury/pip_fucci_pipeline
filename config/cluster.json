@@ -1,0 +1,19 @@
+{"__default__": {
+    "account_pbs": "your_pbs_account",
+    "account_slurm": "indikar1",
+    "queue": "fluxod",
+	"qos":"flux",
+    "partition": "standard",
+    "jobname": "{rule}.{wildcards}",
+    "nodes": 1,
+    "procs": 1,
+    "pmem": "50GB",
+    "walltime": "96:00:00",
+    "email": "cstansbu@umich.edu",
+    "mailon": "a",
+    "mail_type": "END,FAIL",
+    "jobout": "oe",
+    "outdir": "logs/",
+    "outfile": "logs/{rule}.{wildcards}.out"
+    }
+}
