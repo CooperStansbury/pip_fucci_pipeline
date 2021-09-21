@@ -1,6 +1,7 @@
 import pandas as pd
 import yaml
 from pathlib import Path
+from utils import snakemake_utils
 
 # Define config and input and output directories
 BASE_DIR = Path(workflow.basedir)
@@ -40,8 +41,18 @@ rule split_channels:
     shell:
         "python scripts/split_channels.py {input} {output}"
  
- 
-rule write_tiffs:
+
+# get the list of arrays from the directory - this is sloppy
+output_dir =  f"{OUTPUTS}raw_channel_arrays/"
+SAMPLES = snakemake_utils.get_sample_list(output_dir)
+
+
+rule prepare:
     input:
+        expand(f"raw_channel_arrays/{{sample}}.npy", sample=SAMPLES)
     output:
+        f"{OUTPUTS}clean_arrays/{{sample}}.npy"
+    threads:
+        config['threads']
     shell:
+        f"python scripts/prepare.py {input}"

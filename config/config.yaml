@@ -1,8 +1,8 @@
-img_path: "/nfs/turbo/umms-indikar/shared/projects/live_cell_imaging/6A/B5_subset.czi"
-output: "/home/cstansbu/git_repositories/pip_fucci_pipeline/outputs/"
+img_path: "/nfs/turbo/umms-indikar/shared/projects/live_cell_imaging/test/mitosis_example/3x3-extract-Scene6-07-14to15.czi/"
+output: "/tmpssd/outputs/"
 channels:
     green: 1
-    blue: 2
-    red: 3
+    blue: 3
+    red: 2
     oblique: 4
 threads: 36
